@@ -23,6 +23,11 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    const brandsCollection = client.db("brandsDB").collection("brands");
+    app.get("/brands", async (req, res) => {
+      const result = await brandsCollection.find().toArray();
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -36,7 +41,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("TechSparc server is running...");
+  res.send("Updated TechSparc server is running...");
 });
 
 app.listen(port, () => {
