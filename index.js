@@ -29,6 +29,19 @@ async function run() {
       const result = await brandsCollection.find().toArray();
       res.send(result);
     });
+
+    // products collection
+    const productsCollection = client.db("productsDB").collection("products");
+    app.get("/products", async (req, res) => {
+      const result = await productsCollection.find().toArray();
+      res.send(result);
+    });
+    app.post("/products", async (req, res) => {
+      const product = req.body;
+      const result = await productsCollection.insertOne(product);
+      res.send(result);
+    });
+
     //users collection
     const usersCollection = client.db("usersDB").collection("users");
     app.get("/users", async (req, res) => {
