@@ -23,9 +23,21 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    // brandsCollection
     const brandsCollection = client.db("brandsDB").collection("brands");
     app.get("/brands", async (req, res) => {
       const result = await brandsCollection.find().toArray();
+      res.send(result);
+    });
+    //users collection
+    const usersCollection = client.db("usersDB").collection("users");
+    app.get("/users", async (req, res) => {
+      const result = await usersCollection.find().toArray();
+      res.send(result);
+    });
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await usersCollection.insertOne(user);
       res.send(result);
     });
     // Send a ping to confirm a successful connection
