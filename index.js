@@ -90,6 +90,33 @@ async function run() {
       res.send(result);
     });
 
+    //users card collections
+    const userCardsCollection = client
+      .db("userCartsDB")
+      .collection("userCarts");
+
+    app.get("/user-carts", async (req, res) => {
+      const result = await userCardsCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/user-carts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCardsCollection.findOne(query);
+      res.send(result);
+    });
+    app.post("/user-carts", async (req, res) => {
+      const data = req.body;
+      const result = await userCardsCollection.insertOne(data);
+      res.send(result);
+    });
+    app.delete("/user-carts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await userCardsCollection.deleteOne(query);
+      res.send(result);
+    });
+    ////////////////////////////////////
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
@@ -103,7 +130,7 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("Updated TechSparc server is running...");
+  res.send("TechSparc server is running...");
 });
 
 app.listen(port, () => {
